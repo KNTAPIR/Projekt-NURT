@@ -2,11 +2,13 @@
 #include <AccelStepper.h>
 
 // Define pin connections
-const int dirPin = 9;
-const int stepPin = 8;
+const int dirPin = 8;
+const int stepPin = 9;
 const int stepsForRevolution = 200;
 const int multiplier = 16;
-const int speed = 15;
+const int speed = 15*4;
+
+const byte BUTTON_PIN_START = 6;
 
 // Define motor interface type
 #define motorInterfaceType 1
@@ -19,6 +21,7 @@ void setup() {
 	myStepper.setAcceleration(multiplier*5);
 	myStepper.setSpeed(multiplier*speed);
 	myStepper.moveTo(multiplier*100);
+	pinMode(BUTTON_PIN_START, INPUT);
 }
 
 void loop() {
@@ -27,5 +30,6 @@ void loop() {
 		myStepper.moveTo(-myStepper.currentPosition());
 
 	// Move the motor one step
-	myStepper.run();
+	if(digitalRead(BUTTON_PIN_START) == LOW)
+		myStepper.run();
 }
